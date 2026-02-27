@@ -2,13 +2,6 @@
 
 A clean, production-grade productivity timer built with Flutter. Designed to demonstrate real-world Flutter architecture and engineering patterns for a professional portfolio.
 
-<p float="left">
-  <img src="screenshots/timer_light.png" width="200"/>
-  <img src="screenshots/stats_light.png" width="200"/>
-  <img src="screenshots/settings_light.png" width="200"/>
-  <img src="screenshots/timer_dark.png" width="200"/>
-</p>
-
 ---
 
 ## Features

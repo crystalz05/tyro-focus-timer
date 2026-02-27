@@ -25,6 +25,13 @@ class AppStrings {
   static const String settings = 'Settings';
   static const String minutes = 'min';
 
+  static const String workDuration = 'Focus Duration';
+  static const String shortBreakDuration = 'Short Break';
+  static const String longBreakDuration = 'Long Break';
+
+  static const String enableNotifications = 'Enable Notifications';
+  static const String darkMode = 'Dark Mode';
+
   static const String sessionCompleteTitle = 'Session Complete!';
   static const String workCompleteBody = 'Great work! Time for a break.';
   static const String breakCompleteBody = 'Break is over. Ready to focus?';

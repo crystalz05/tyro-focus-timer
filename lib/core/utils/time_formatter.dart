@@ -1,5 +1,5 @@
-class TimeFormater {
-  TimeFormater._();
+class TimeFormatter {
+  TimeFormatter._();
 
   static String format(int totalSeconds){
     final minutes = totalSeconds ~/ 60;

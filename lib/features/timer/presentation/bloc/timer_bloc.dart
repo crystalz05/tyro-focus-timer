@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_timer/core/di/injection.dart';
+import '../../../../core/services/notificate_service.dart';
 import '../../../../core/utils/ticker.dart';
 import '../../../../core/constants/app_durations.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../session/domain/entities/session.dart';
 import '../../../session/presentation/bloc/session_bloc.dart';
 import '../../../session/presentation/bloc/session_event.dart';
+import '../../../settings/presentation/cubit/settings_cubit.dart';
 import 'timer_event.dart';
 import 'timer_state.dart';
 
@@ -17,14 +20,16 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   int _longBreakMinutes;
 
   StreamSubscription<int>? _tickerSubscription;
+  final NotificationService notificationService;
 
   TimerBloc({
     required Ticker ticker,
     required this.sessionBloc,
+    required this.notificationService,   // ← add this
     int workMinutes = AppDurations.defaultWorkMinutes,
     int shortBreakMinutes = AppDurations.defaultShortBreakMinutes,
     int longBreakMinutes = AppDurations.defaultLongBreakMinutes,
-  })  : _ticker = ticker,
+  }) : _ticker = ticker,
         _workMinutes = workMinutes,
         _shortBreakMinutes = shortBreakMinutes,
         _longBreakMinutes = longBreakMinutes,
@@ -128,8 +133,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     ));
   }
 
-  Future<void> _onTicked(
-      TimerTicked event, Emitter<TimerState> emit) async {
+  Future<void> _onTicked(TimerTicked event, Emitter<TimerState> emit) async {
     if (event.remainingSeconds > 0) {
       emit(TimerRunning(
         remainingSeconds: event.remainingSeconds,
@@ -140,6 +144,13 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       ));
     } else {
       _tickerSubscription?.cancel();
+
+      // Fire notification if enabled in settings
+      if (getIt<SettingsCubit>().currentSettings.notificationsEnabled) {
+        await notificationService.showSessionCompleteNotification(
+          isWorkSession: state.sessionType == SessionType.work,
+        );
+      }
 
       // Save to DB if this was a work session
       if (state.sessionType == SessionType.work) {

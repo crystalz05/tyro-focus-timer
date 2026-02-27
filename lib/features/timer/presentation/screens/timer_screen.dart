@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:focus_timer/core/utils/time_formater.dart';
+import 'package:focus_timer/core/utils/time_formatter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../bloc/timer_bloc.dart';
 import '../bloc/timer_state.dart';
@@ -66,7 +66,7 @@ class TimerScreen extends StatelessWidget {
 
                   TimerRing(
                     progress: state.progress,
-                    timeText: TimeFormater.format(state.remainingSeconds),
+                    timeText: TimeFormatter.format(state.remainingSeconds),
                     sessionType: state.sessionType,
                     isDark: isDark,
                   ),
